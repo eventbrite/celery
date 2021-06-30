@@ -83,7 +83,7 @@ class LRUCache(UserDict):
 
     def _iterate_items(self, _need_lock=IS_PYPY):
         with self.mutex if _need_lock else DummyContext():
-            for k in self:
+            for k in list(self.keys()):
                 try:
                     yield (k, self.data[k])
                 except KeyError:  # pragma: no cover
@@ -92,7 +92,7 @@ class LRUCache(UserDict):
 
     def _iterate_values(self, _need_lock=IS_PYPY):
         with self.mutex if _need_lock else DummyContext():
-            for k in self:
+            for k in list(self.keys()):
                 try:
                     yield self.data[k]
                 except KeyError:  # pragma: no cover
