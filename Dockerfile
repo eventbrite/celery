@@ -4,4 +4,4 @@ WORKDIR /src/
 
 COPY . .
 
-CMD tox
+CMD ["tox", "-vv"]
