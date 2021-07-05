@@ -27,7 +27,7 @@ jobs:
     executor:
       name: small-docker
     environment:
-      LIBRARY_NAME: permissions
+      LIBRARY_NAME: celery
     steps:
       - checkout
       - setup_remote_docker
@@ -51,7 +51,7 @@ jobs:
             --branch ${CIRCLE_BRANCH} \
             --aws-access-key-id ${ECR35_AWS_ACCESS_KEY_ID} \
             --aws-secret-access-key ${ECR35_AWS_SECRET_ACCESS_KEY} \
-            --publish-release-wheel=py37
+            --publish-release-wheel=py27
   test:
     executor:
       name: small-docker
