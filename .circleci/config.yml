@@ -89,9 +89,6 @@ jobs:
           name: Create test reports directory
           command: mkdir /tmp/test-artifacts
       - run:
-          name: Code Climate - Send pending coverage report
-          command: cc-test-reporter before-build
-      - run:
           name: Build images
           command: |
               echo "export STEP=\"Build images\"" >> $BASH_ENV
