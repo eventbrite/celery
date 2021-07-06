@@ -86,9 +86,6 @@ jobs:
       - run:
           <<: *generate-codeartifact-token
       - run:
-          name: Create test reports directory
-          command: mkdir /tmp/test-artifacts
-      - run:
           name: Build images
           command: |
               echo "export STEP=\"Build images\"" >> $BASH_ENV
@@ -98,22 +95,6 @@ jobs:
           command: |
               echo "export STEP=\"Run tests\"" >> $BASH_ENV
               docker-compose run tox
-      - run:
-          name: Store test results
-          command: |
-            docker cp $(docker-compose ps -aq -- tox):/tmp/test-results /tmp/test-results
-            docker cp $(docker-compose ps -aq -- tox):/tmp/test-artifacts /tmp/test-artifacts || true
-          when: always
-      - run:
-          name: Code Climate - Send coverage report
-          command: |
-            docker cp $(docker-compose ps -aq -- tox):/tmp/coverage.xml coverage.xml
-            cc-test-reporter after-build -t coverage.py
-      - store_test_results:
-          path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-artifacts
-          destination: Test Result
       - run:
           name: Slack - Set PR URL
           command: |
