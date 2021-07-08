@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import codecs
 
 try:
     from setuptools import setup, find_packages
@@ -16,7 +17,10 @@ except ImportError:
 import os
 import re
 import sys
-import codecs
+
+with codecs.open( os.path.join(os.path.dirname(__file__), 'celery', 'version.txt'), mode='rb', encoding='utf8', ) as _version_file:
+    __version__ = _version_file.read().strip()
+
 
 CELERY_COMPAT_PROGRAMS = int(os.environ.get('CELERY_COMPAT_PROGRAMS', 1))
 
@@ -184,7 +188,7 @@ if is_setuptools:
 
 setup(
     name=NAME,
-    version=meta['VERSION'],
+    version=__version__,
     description=meta['doc'],
     author=meta['author'],
     author_email=meta['contact'],
@@ -192,6 +196,7 @@ setup(
     platforms=['any'],
     license='BSD',
     packages=find_packages(exclude=['ez_setup', 'tests', 'tests.*']),
+    package_data={str('celery'): [str('version.txt')]},
     zip_safe=False,
     install_requires=install_requires,
     tests_require=tests_require,
