@@ -196,6 +196,7 @@ setup(
     platforms=['any'],
     license='BSD',
     packages=find_packages(exclude=['ez_setup', 'tests', 'tests.*']),
+    package_data={str('celery'): [str('version.txt')]},
     zip_safe=False,
     install_requires=install_requires,
     tests_require=tests_require,
