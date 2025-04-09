@@ -213,6 +213,7 @@ class Command(object):
         Option('--workdir', default=None, dest='working_directory'),
         Option('--no-color', '-C', action='store_true', default=None),
         Option('--quiet', '-q', action='store_true'),
+        Option('--skip-checks', action='store_true'),
     )
 
     #: Enable if the application should support config from the cmdline.
@@ -239,7 +240,7 @@ class Command(object):
 
     def __init__(self, app=None, get_app=None, no_color=False,
                  stdout=None, stderr=None, quiet=False, on_error=None,
-                 on_usage_error=None):
+                 on_usage_error=None, skip_checks=False):
         self.app = app
         self.get_app = get_app or self._get_default_app
         self.stdout = stdout or sys.stdout
@@ -247,6 +248,7 @@ class Command(object):
         self._colored = None
         self._no_color = no_color
         self.quiet = quiet
+        self.skip_checks = skip_checks
         if not self.description:
             self.description = self.__doc__
         if on_error:
@@ -464,6 +466,9 @@ class Command(object):
         config = preload_options.get('config')
         if config:
             os.environ['CELERY_CONFIG_MODULE'] = config
+        skip_checks = preload_options.get('skip_checks')
+        if skip_checks:
+            os.environ['CELERY_SKIP_CHECKS'] = 'true'
         if self.respects_app_option:
             if app:
                 self.app = self.find_app(app)
